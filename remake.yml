@@ -1,0 +1,24 @@
+sources:
+  - R/
+
+packages:
+  - dplyr
+  - ggplot2
+  - readr
+
+targets:
+
+  station_data:
+    command: read_data("~/Documents/plankton-larvae-data/station_data.csv")
+
+  extraction_metacommunity:
+    command: read_data("~/Documents/plankton-larvae-data/extraction_metacommunity.csv")
+
+  sample_metacommunity:
+    command: read_data("~/Documents/plankton-larvae-data/sample_metacommunity.csv")
+
+  pcr_metacommunity:
+    command: read_data("~/Documents/plankton-larvae-data/pcr_metacommunity.csv")
+
+  metabarcoding_stations:
+    command: extract_metabarcoding_stations(station_data, sample_metacommunity, extraction_metacommunity, pcr_metacommunity)
