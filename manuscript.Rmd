@@ -2,6 +2,15 @@
 
 ### Sample collection
 
+Plankton samples were collected in the vicinity of the Matanzas Inlet, south of St Augustine, FL (Fig.\@ref(fig:map-sampling)).
+
+Between `r min_date_larvae` and `r max_date_larvae`, plankton tows were conducted in surface water using a 80 µm mesh-size net (Sea-Gear Corporation) for 2 minutes. The content of the cod end bottle was brought back to the Whitney Laboratory, where individual larvae were selected, photographed, and preserved in 95% ethanol until DNA extraction. Over this time period, `r n_larvae` larvae were photographed and had their DNA extracted.
+
+On November 24th, 2015, December 16th, 2015, and January 7th, 2016. Plankton from the surface water were collected usinig a 80µm mesh-size net for 2 minutes. The content of the cod end bottle was fractioned on two superimposed sieves with nylon mesh sizes of 250 µm and 35µm. The filters were rinsed with 95% ethanol before getting transferred into 50mL Falcon tubes with 95% ethanol. These tubes were stored at -20°C until DNA extraction.
+
+```{r map-sampling}
+knitr::include_graphics("figures/sampling_map.pdf")
+```
 
 
 ### Planktonic larval stages
