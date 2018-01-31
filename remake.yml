@@ -5,6 +5,8 @@ packages:
   - dplyr
   - ggplot2
   - readr
+  - patchwork
+  - rgdal
 
 targets:
 
@@ -22,3 +24,18 @@ targets:
 
   metabarcoding_stations:
     command: extract_metabarcoding_stations(station_data, sample_metacommunity, extraction_metacommunity, pcr_metacommunity)
+
+  florida_map_fortified:
+    command: fortify_shp_file(path=I("data/florida_shape_file"), layer=I("usa_states"))
+
+  metabarcoding_station_map:
+    command: map_metabarcoding_stations(metabarcoding_stations, florida_map_fortified)
+
+  florida_map:
+    command: map_florida(florida_map_fortified)
+
+  figures/sampling_map.pdf:
+    command: draw_map_sampling(florida_map, metabarcoding_station_map)
+    plot:
+      height: 4
+      width: 8
