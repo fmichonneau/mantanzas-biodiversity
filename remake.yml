@@ -2,6 +2,7 @@ sources:
   - R/
 
 packages:
+  - purrr
   - dplyr
   - ggplot2
   - readr
@@ -39,3 +40,9 @@ targets:
     plot:
       height: 4
       width: 8
+
+  blast_data:
+    command: get_blast_data(I("data/nested_blast"))
+
+  blast_with_classif:
+    command: add_classification(blast_data)
