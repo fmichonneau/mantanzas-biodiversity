@@ -46,3 +46,9 @@ targets:
 
   blast_with_classif:
     command: add_classification(blast_data)
+
+  sequence_abundances:
+    command: read_matrix_data("data/seqtab_final.rds")
+
+  species_richness:
+    command: plot_species_richness(sequence_abundances, blast_with_classif)
