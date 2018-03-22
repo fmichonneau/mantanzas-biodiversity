@@ -42,7 +42,7 @@ targets:
       width: 8
 
   blast_data:
-    command: get_blast_data(I("data/nested_blast"))
+    command: get_blast_data(I("data/nested_blast_nt"), database=I("nt"))
 
   blast_with_classif:
     command: add_classification(blast_data)

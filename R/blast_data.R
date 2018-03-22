@@ -1,4 +1,5 @@
-get_blast_data <- function(path, pattern = "blasted_.+\\.txt") {
+get_blast_data <- function(path, pattern = "blasted_.+\\.txt",
+                           database = c("nt", "midori")) {
 
     lst_files <- list.files(path = path, pattern = pattern,
                             full.names = TRUE)
@@ -15,12 +16,25 @@ get_blast_data <- function(path, pattern = "blasted_.+\\.txt") {
     id_level <- gsub(".+_i([0-9]+)\\.txt", "\\1", lst_files)
     res$identity <- id_level[as.numeric(res$identity)]
 
-    res %>%
-        tidyr::separate(taxonomy, into = c("taxid", "taxstring"),
-                        sep = "\\s{3}") %>%
-        dplyr::mutate(classif = map(taxid, ~ ncbi_classification_from_genbank(.)))
+    ## the midori database has the taxonomy ID and string in the taxononmy
+    ## column but the nt database doesn't
+    if (identical(database, "midori")) {
+        res %>%
+            tidyr::separate(taxonomy, into = c("taxid", "taxstring"),
+                            sep = "\\s{3}") %>%
+            dplyr::mutate(classif = purrr::map(taxid, ~ ncbi_classification_from_genbank(.))) %>%
+            return()
 
+    } else if (identical(database, "nt")) {
+        tt <- res %>%
+            dplyr::mutate(genbank_id = stringr::str_extract(all_subject_seqid, "[A-Z]{1,2}[0-9]{5,6}\\.[1-9]{1}"),
+                          genbank_id = gsub("\\.[1-9]{1}$", "", genbank_id)) %>%
+            dplyr::mutate(classif = purrr::map(genbank_id, ~ ncbi_classification_from_genbank(.))) %>%
+            return()
+
+    } else stop("invalid")
 }
+
 
 add_classification <- function(blast_res) {
     blast_res %>%
@@ -70,7 +84,7 @@ ncbi_classification_from_genbank <- function(id) {
     message("ID: ", id)
     ncbi_id    <- store_ncbi_id()$get(id)
     if (is.na(ncbi_id)) return(NA)
-    classif_id <- store_ncbi_classification()$get(ncbi_id)
+    classif_id <- store_ncbi_classification()$get(ncbi_id[[1]])
     select_classif <- classif_id[[1]][classif_id[[1]]$rank %in%
                                       c("superkingdom",
                                         "kingdom",

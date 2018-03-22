@@ -28,7 +28,9 @@ if (FALSE) {
 }
 
 plot_species_richness <- function(seq_abdce, sp_assign, project_file = "data/station_project.csv") {
+
     sp_assign_d <- sp_assign %>%
+        dplyr::filter(query_seqid >=  90, !is.na(phylum)) %>%
         dplyr::group_by(query_seqid) %>%
         dplyr::arrange(desc(pident)) %>%
         dplyr::slice(1) %>%
